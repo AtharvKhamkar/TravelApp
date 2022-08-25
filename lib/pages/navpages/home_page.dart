@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/misc/colors.dart';
 
 import 'package:travel_app/widget/app_large_text.dart';
+import 'package:travel_app/widget/app_text.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -12,6 +13,12 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
+  var images = {
+    "balloning.png": "Balloning",
+    "hiking.png": "Hiking",
+    "kayaking.png": "Kayaking",
+    "snorkling.png": "Snorkling"
+  };
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 3, vsync: this);
@@ -38,7 +45,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: 30,
           ),
           //Discovery Text
           Container(
@@ -46,7 +53,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             child: AppLargeText(text: "Discovery"),
           ),
           SizedBox(
-            height: 30,
+            height: 20,
           ),
           //Tab Bar
           Container(
@@ -70,13 +77,94 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             ),
           ),
           Container(
+            padding: const EdgeInsets.only(left: 20, top: 10),
             height: 300,
             width: double.infinity,
             child: TabBarView(
               controller: _tabController,
-              children: [Text("Hi"), Text("There"), Text("Bye")],
+              children: [
+                ListView.builder(
+                    itemCount: 3,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        margin: const EdgeInsets.only(right: 15),
+                        width: 200,
+                        height: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          image: DecorationImage(
+                            image: AssetImage("assets/img/mountain.jpeg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    }),
+                Text("There"),
+                Text("Bye")
+              ],
             ),
-          )
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppLargeText(
+                  text: "Explore more",
+                  size: 22,
+                ),
+                AppText(text: "See all", color: AppColors.textColor1)
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              height: 120,
+              width: double.infinity,
+              margin: const EdgeInsets.only(left: 20),
+              child: ListView.builder(
+                itemCount: 4,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: ((context, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          //margin: const EdgeInsets.only(right: 20),
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/img/" + images.keys.elementAt(index)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                            child: AppText(
+                          text: images.values.elementAt(index),
+                          color: AppColors.textColor2,
+                        ))
+                      ],
+                    ),
+                  );
+                }),
+              ))
         ],
       ),
     );
@@ -113,6 +201,6 @@ class _CirclePainter extends BoxPainter {
         configuration.size!.width / 2 - radius / 2,
         configuration.size!.height - radius);
 
-    canvas.drawCircle(offset, radius, _paint);
+    canvas.drawCircle(offset + circleoffset, radius, _paint);
   }
 }
